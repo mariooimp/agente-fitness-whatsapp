@@ -1,0 +1,462 @@
+{
+  "name": "WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "085c5768-f9c5-4197-a6c9-01c97f0e4d8a",
+      "name": "Webhook",
+      "webhookId": "426e16e1-7147-4021-9a38-64253a0729aa"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b5590e8b-b288-4a99-b770-dd7c84d8f90c",
+              "name": "session",
+              "value": "={{ $json.body.session }}",
+              "type": "string"
+            },
+            {
+              "id": "7fe017c1-6782-4034-8540-e7d78afdb72e",
+              "name": "chatId",
+              "value": "={{ $json.body.payload.from }}",
+              "type": "string"
+            },
+            {
+              "id": "fcdcc79b-05f6-4243-a385-a3a82b4d314a",
+              "name": "pushName",
+              "value": "={{ $json.body.payload._data.Info.PushName }}",
+              "type": "string"
+            },
+            {
+              "id": "77c4e41d-83ef-4bd7-af2c-30705f7ce9bf",
+              "name": "payload_id",
+              "value": "={{ $json.body.payload.id }}",
+              "type": "string"
+            },
+            {
+              "id": "b38038d0-f681-461e-a62c-e187c9a62cd3",
+              "name": "event",
+              "value": "={{ $json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "a8a72b9f-4f63-417c-b073-c7c155b8bc48",
+              "name": "message",
+              "value": "={{ $json.body.payload.body }}",
+              "type": "string"
+            },
+            {
+              "id": "56171600-f666-4d80-a984-55886187de32",
+              "name": "fromME",
+              "value": "={{ $json.body.payload.fromMe }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "241d18b1-8668-4230-af74-aa7101fe9d3c",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.event }}",
+                    "rightValue": "message",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0248a239-98ff-4b44-b82f-68295f302612"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "acf0f0c1-787b-491c-9582-05bce42a2cc1",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "Você é um assistente inteligente para WhatsApp.\n\nSeu objetivo é responder perguntas sobre qualquer assunto de forma:\n- rápida\n- clara\n- útil\n- atualizada\n- natural\n\nREGRAS:\n- Responda de forma breve.\n- Use poucas palavras e poucos caracteres.\n- Evite textos longos.\n- Vá direto ao ponto.\n- Priorize respostas curtas e inteligentes.\n- Seja amigável e humano.\n- Se necessário, faça apenas 1 pergunta por vez.\n- Nunca invente informações.\n- Se não souber algo, diga claramente.\n- Sempre tente trazer informações atualizadas e relevantes.\n\nCOMPORTAMENTO:\n- Responda como uma conversa real no WhatsApp.\n- Não fale de forma robótica.\n- Evite repetir informações.\n- Não use listas grandes.\n- Não escreva explicações desnecessárias.\n- Resuma ao máximo sem perder utilidade.\n\nESPECIALIDADES:\n- tecnologia\n- carros e motos\n- preços\n- notícias\n- dicas\n- produtividade\n- internet\n- jogos\n- IA\n- assuntos gerais\n\nIMPORTANTE:\n- Considere Florianópolis, Santa Catarina, Brasil como referência quando necessário.\n- Priorize economia de tokens.\n- Limite respostas ao essencial.\n- Respostas devem parecer rápidas e modernas.\n\nEXEMPLOS:\n\nUsuário:\n\"Oi\"\n\nResposta:\n\"Olá! Como posso ajudar?\"\n\nUsuário:\n\"Melhor moto até 20 mil\"\n\nResposta:\n\"CG 160 e Factor 150 são ótimas opções para economia e uso urbano.\"\n\nUsuário:\n\"Quem ganhou o jogo ontem?\"\n\nResposta:\n\"Forneça o time ou campeonato para eu verificar.\"\n\nUsuário:\n\"Vale comprar iPhone 13?\"\n\nResposta:\n\"Ainda vale bastante pela performance e câmeras, principalmente se estiver em bom preço.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "579fd5bc-c5ec-4d4e-bace-4c0e77506cc6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        592,
+        192
+      ],
+      "id": "e127998a-3a6d-434c-b8d9-6cb530587c94",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "US2p5r2Ljs1cCAZC",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.chatId }}",
+        "sessionTTL": 3600,
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.6,
+      "position": [
+        704,
+        192
+      ],
+      "id": "c5f96420-d80d-4f5f-b77e-1ba5fc72cac9",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "ZHaac6u7tayynRx2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Seen",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.chatId }}",
+        "messageId": "={{ $('Dados').item.json.payload_id }}",
+        "participant": "",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        976,
+        0
+      ],
+      "id": "3dcd91dc-093b-4582-9636-6b97094a1957",
+      "name": "Send Seen",
+      "credentials": {
+        "wahaApi": {
+          "id": "HWKlX1cW4oWssY2z",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Text",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.chatId }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "44b5fdd4-2bce-4239-be83-9d353c38595f",
+      "name": "Send a text message",
+      "credentials": {
+        "wahaApi": {
+          "id": "HWKlX1cW4oWssY2z",
+          "name": "WAHA account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "WAHA/2026.4.3",
+            "x-webhook-request-id": "1l0q4r7mpllnp9u",
+            "x-webhook-timestamp": "1779737335979",
+            "content-length": "2230",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "host.docker.internal:5678",
+            "connection": "keep-alive"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "evt_01ksg9s65b26fzr51tww1x15dp",
+            "timestamp": 1779737335979,
+            "event": "message",
+            "session": "default",
+            "metadata": {},
+            "me": {
+              "id": "554888506463@c.us",
+              "pushName": "testing…",
+              "lid": "74488339296498@lid",
+              "jid": "554888506463:6@s.whatsapp.net"
+            },
+            "payload": {
+              "id": "false_235437390073964@lid_3A152FDB4B31962B5C90",
+              "timestamp": 1779737335,
+              "from": "235437390073964@lid",
+              "fromMe": false,
+              "source": "app",
+              "body": "Ola",
+              "to": null,
+              "participant": null,
+              "hasMedia": false,
+              "media": null,
+              "ack": 2,
+              "location": null,
+              "vCards": null,
+              "ackName": "DEVICE",
+              "replyTo": null,
+              "_data": {
+                "Info": {
+                  "Chat": "235437390073964@lid",
+                  "Sender": "235437390073964@lid",
+                  "IsFromMe": false,
+                  "IsGroup": false,
+                  "AddressingMode": "",
+                  "SenderAlt": "554884609138@s.whatsapp.net",
+                  "RecipientAlt": "",
+                  "BroadcastListOwner": "",
+                  "BroadcastRecipients": null,
+                  "ID": "3A152FDB4B31962B5C90",
+                  "ServerID": 0,
+                  "Type": "text",
+                  "PushName": "mario",
+                  "Timestamp": "2026-05-25T19:28:55Z",
+                  "Category": "",
+                  "Multicast": false,
+                  "MediaType": "",
+                  "Edit": "",
+                  "MsgBotInfo": {
+                    "EditType": "",
+                    "EditTargetID": "",
+                    "EditSenderTimestampMS": "0001-01-01T00:00:00Z"
+                  },
+                  "MsgMetaInfo": {
+                    "TargetID": "",
+                    "TargetSender": "",
+                    "TargetChat": "",
+                    "DeprecatedLIDSession": null,
+                    "ThreadMessageID": "",
+                    "ThreadMessageSenderJID": ""
+                  },
+                  "VerifiedName": null,
+                  "DeviceSentMeta": null
+                },
+                "Message": {
+                  "conversation": "Ola",
+                  "messageContextInfo": {
+                    "deviceListMetadata": {
+                      "senderKeyHash": "mxcXOWLXj59aAQ==",
+                      "senderTimestamp": 1779658233,
+                      "recipientKeyHash": "qLWIJvAgLP1PFw==",
+                      "recipientTimestamp": 1779736825
+                    },
+                    "deviceListMetadataVersion": 2,
+                    "messageSecret": "DuaELPpaqd6/bnblCyRoth02smkGGgvu3MfJZSPosXg="
+                  }
+                },
+                "IsEphemeral": false,
+                "IsViewOnce": false,
+                "IsViewOnceV2": false,
+                "IsViewOnceV2Extension": false,
+                "IsDocumentWithCaption": false,
+                "IsLottieSticker": false,
+                "IsBotInvoke": false,
+                "IsEdit": false,
+                "SourceWebMsg": null,
+                "UnavailableRequestID": "",
+                "RetryCount": 0,
+                "NewsletterMeta": null,
+                "RawMessage": {
+                  "conversation": "Ola",
+                  "messageContextInfo": {
+                    "deviceListMetadata": {
+                      "senderKeyHash": "mxcXOWLXj59aAQ==",
+                      "senderTimestamp": 1779658233,
+                      "recipientKeyHash": "qLWIJvAgLP1PFw==",
+                      "recipientTimestamp": 1779736825
+                    },
+                    "deviceListMetadataVersion": 2,
+                    "messageSecret": "DuaELPpaqd6/bnblCyRoth02smkGGgvu3MfJZSPosXg="
+                  }
+                },
+                "Status": 3
+              }
+            },
+            "environment": {
+              "version": "2026.4.3",
+              "engine": "GOWS",
+              "tier": "CORE",
+              "browser": null,
+              "platform": "linux/x64",
+              "worker": {
+                "id": null
+              }
+            }
+          },
+          "webhookUrl": "http://host.docker.internal:5678/webhook-test/webhook",
+          "executionMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send Seen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Seen": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e1903c4d-fbde-4896-a6a7-b5ab5736043d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f3691ea5d334280eb765adde31e14e60a0eedcdff90ffcab4d9d34f542295312"
+  },
+  "id": "CCMgp9Ymx5HnXIIo",
+  "tags": []
+}
