@@ -3,6 +3,8 @@
 Agente de IA especializado em fitness integrado ao WhatsApp,
 com memória de conversação persistente.
 
+![Fluxo do Agente](Fluxo.png)
+
 ## Problema que resolve
 Personal trainers e academias recebem diariamente dezenas
 de perguntas repetitivas no WhatsApp — treinos, dietas,
@@ -34,3 +36,9 @@ Webhook → Dados → Switch → AI Agent → Send Seen → Send Text
 2. Configure as variáveis de ambiente com suas chaves de API
 3. Importe o arquivo `WhatsApp.json` no N8N
 4. Suba o ambiente com Docker
+
+## Pré-requisitos
+- Docker instalado
+- Conta no Google AI Studio para chave do Gemini
+- WAHA rodando localmente ou em servidor
+- Redis rodando via Docker
