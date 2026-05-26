@@ -32,5 +32,5 @@ Webhook → Dados → Switch → AI Agent → Send Seen → Send Text
 ## Como executar
 1. Clone o repositório
 2. Configure as variáveis de ambiente com suas chaves de API
-3. Importe o arquivo `flow.json` no N8N
+3. Importe o arquivo `WhatsApp.json` no N8N
 4. Suba o ambiente com Docker
